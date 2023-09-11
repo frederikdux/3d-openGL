@@ -1,55 +1,32 @@
 package Entities;
 
 import org.lwjgl.input.Keyboard;
+import org.lwjgl.input.Mouse;
 import org.lwjgl.util.vector.Vector3f;
 
 public class Camera {
+
+    private float distanceFromPlayer = 50;
+    private float angleAroundPlayer = 0;
+
     private Vector3f position = new Vector3f(100, 5, -30);
-    private float pitch;
-    private float yaw;
+    private float pitch = 20;
+    private float yaw = 0;
     private float roll;
 
-    public Camera(){}
+    private Player player;
+
+    public Camera(Player player){
+        this.player = player;
+    }
 
     public void move(){
-        float speed = 0.05f;
+        controllPitch();
+        controllYaw();
 
-        if(Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)){
-            speed = 0.5f;
-        } else{
-            speed = 0.05f;
-        }
-
-        if(Keyboard.isKeyDown(Keyboard.KEY_W)){
-            position.z -= speed;
-        }
-        if(Keyboard.isKeyDown(Keyboard.KEY_D)){
-            position.x += speed;
-        }
-        if(Keyboard.isKeyDown(Keyboard.KEY_A)){
-            position.x -= speed;
-        }
-        if(Keyboard.isKeyDown(Keyboard.KEY_S)){
-            position.z += speed;
-        }
-        if(Keyboard.isKeyDown(Keyboard.KEY_SPACE)){
-            position.y += 0.05f;
-        }
-        if(Keyboard.isKeyDown(Keyboard.KEY_LCONTROL)){
-            position.y -= 0.05f;
-        }
-        if(Keyboard.isKeyDown(Keyboard.KEY_E)){
-            yaw += 0.5f;
-        }
-        if(Keyboard.isKeyDown(Keyboard.KEY_Q)){
-            yaw -= 0.5f;
-        }
-        if(Keyboard.isKeyDown(Keyboard.KEY_RSHIFT)){
-            pitch += 0.5f;
-        }
-        if(Keyboard.isKeyDown(Keyboard.KEY_RCONTROL)){
-            pitch -= 0.5f;
-        }
+        position.x = player.getPosition().x;
+        position.z = player.getPosition().z;
+        position.y = player.getPosition().y+5;
     }
 
     public Vector3f getPosition() {
@@ -66,5 +43,21 @@ public class Camera {
 
     public float getRoll() {
         return roll;
+    }
+
+    private float calculatedHorizontalDistance(){
+        return (float) (distanceFromPlayer * Math.cos(Math.toRadians(pitch)));
+    }
+    private float calculatedVerticalDistance(){
+        return (float) (distanceFromPlayer * Math.sin(Math.toRadians(pitch)));
+    }
+
+
+    private void controllPitch(){
+        pitch -= Mouse.getDY() * 0.1f;
+    }
+
+    private void controllYaw(){
+        yaw = 180 - player.getRotY();
     }
 }

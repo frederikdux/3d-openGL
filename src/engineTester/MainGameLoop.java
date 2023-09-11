@@ -4,6 +4,7 @@ import Entities.*;
 import models.TexturedModel;
 import objConverter.ModelData;
 import objConverter.OBJFileLoader;
+import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.util.vector.Vector3f;
 import renderEngine.*;
@@ -16,6 +17,7 @@ import textures.TerrainTexturePack;
 
 public class MainGameLoop {
     public static void main(String[] args) {
+        Mouse.setGrabbed(true);
 
         DisplayManager.createDisplay();
         Loader loader = new Loader();
@@ -57,9 +59,6 @@ public class MainGameLoop {
         Terrain terrain = new Terrain(0, -1, loader, texturePack, blendMap);
         Terrain terrain2 = new Terrain(-1, -1, loader, texturePack, blendMap);
 
-
-        Camera camera = new Camera();
-
         MasterRenderer renderer = new MasterRenderer();
 
         ModelData playerModelData = OBJFileLoader.loadOBJ("grassModel");
@@ -67,9 +66,12 @@ public class MainGameLoop {
         TexturedModel playerModel = new TexturedModel(rawPlayerModel, new ModelTexture(loader.loadTexture("skin")));
 
         Player player = new Player(playerModel, new Vector3f(100, 0, -50), 0, 0, 0, 1);
+
+        Camera camera = new Camera(player);
+
         while(!Display.isCloseRequested()){
-            //camera.move();
             player.move();
+            camera.move();
             renderer.processEntity(player);
             renderer.processTerrain(terrain);
             renderer.processTerrain(terrain2);
