@@ -1,9 +1,6 @@
 package engineTester;
 
-import Entities.Camera;
-import Entities.Entity;
-import Entities.Light;
-import Entities.Terrain;
+import Entities.*;
 import models.TexturedModel;
 import objConverter.ModelData;
 import objConverter.OBJFileLoader;
@@ -63,11 +60,17 @@ public class MainGameLoop {
 
         Camera camera = new Camera();
 
-
         MasterRenderer renderer = new MasterRenderer();
-        while(!Display.isCloseRequested()){
-            camera.move();
 
+        ModelData playerModelData = OBJFileLoader.loadOBJ("grassModel");
+        RawModel rawPlayerModel = loader.loadToVAO(playerModelData.getVertices(), data.getTextureCoords(), data.getNormals(), data.getIndices());
+        TexturedModel playerModel = new TexturedModel(rawPlayerModel, new ModelTexture(loader.loadTexture("skin")));
+
+        Player player = new Player(playerModel, new Vector3f(100, 0, -50), 0, 0, 0, 1);
+        while(!Display.isCloseRequested()){
+            //camera.move();
+            player.move();
+            renderer.processEntity(player);
             renderer.processTerrain(terrain);
             renderer.processTerrain(terrain2);
             renderer.processEntity(entity);
