@@ -4,6 +4,7 @@ import Entities.*;
 import models.TexturedModel;
 import objConverter.ModelData;
 import objConverter.OBJFileLoader;
+import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.util.vector.Vector3f;
@@ -80,6 +81,10 @@ public class MainGameLoop {
 
             renderer.render(light, camera);
             DisplayManager.updateDisplay();
+
+            if(Keyboard.isKeyDown(Keyboard.KEY_ESCAPE)){
+                DisplayManager.closeDisplay();
+            }
         }
 
         renderer.cleanUp();
