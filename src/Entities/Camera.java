@@ -54,7 +54,7 @@ public class Camera {
 
 
     private void controllPitch(){
-        pitch -= Mouse.getDY() * 0.1f;
+        pitch -= Mouse.getDY() * 0.05f;
     }
 
     private void controllYaw(){

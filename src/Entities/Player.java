@@ -6,6 +6,8 @@ import org.lwjgl.input.Mouse;
 import org.lwjgl.util.vector.Vector3f;
 import renderEngine.DisplayManager;
 
+import java.security.Key;
+
 public class Player extends Entity{
     private static final float RUN_SPEED = 20;
     private static final float TURN_SPEED = 160;
@@ -25,7 +27,7 @@ public class Player extends Entity{
         super(model, position, rotX, rotY, rotZ, scale);
     }
 
-    public void move(){
+    public void move(Terrain terrain){
         checkInputs();
         super.increaseRotation(0, currentTurnSpeed * DisplayManager.getFrameTimeSeconds(), 0);
         float distance = currentSpeed * DisplayManager.getFrameTimeSeconds();
@@ -39,10 +41,12 @@ public class Player extends Entity{
         super.increasePosition(dx + dx2, 0, dz + dz2);
         upwardsSpeed += GRAVITY * DisplayManager.getFrameTimeSeconds();
         super.increasePosition(0, upwardsSpeed * DisplayManager.getFrameTimeSeconds(), 0);
-        if(super.getPosition().y < TERRAIN_HEIGHT){
+
+        float terrainHeight = terrain.getHeightOfTerrain(super.getPosition().x, super.getPosition().z);
+        if(super.getPosition().y < terrainHeight){
             upwardsSpeed = 0;
             isInAir = false;
-            super.getPosition().y = TERRAIN_HEIGHT;
+            super.getPosition().y = terrainHeight;
         }
     }
 
@@ -70,11 +74,15 @@ public class Player extends Entity{
             this.currentSideSpeed = 0;
         }
 
-        increaseRotation(0, -Mouse.getDX() * 0.25f, 0);
+        increaseRotation(0, -Mouse.getDX() * 0.05f, 0);
 
 
         if(Keyboard.isKeyDown(Keyboard.KEY_SPACE)){
             jump();
+        }
+
+        if(Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)){
+            this.currentSpeed *= 2.8;
         }
     }
 }
