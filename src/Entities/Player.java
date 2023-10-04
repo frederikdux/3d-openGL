@@ -9,10 +9,10 @@ import renderEngine.DisplayManager;
 import java.security.Key;
 
 public class Player extends Entity{
-    private static final float RUN_SPEED = 20;
+    private static final float RUN_SPEED = 24;
     private static final float TURN_SPEED = 160;
-    private static final float GRAVITY = -50;
-    private static final float JUMP_POWER = 30;
+    private static final float GRAVITY = -90;
+    private static final float JUMP_POWER =70;
 
     private static final float TERRAIN_HEIGHT = 0;
 

@@ -6,8 +6,8 @@ import org.lwjgl.opengl.*;
 
 public class DisplayManager {
 
-    private static final int WIDTH = 1920;
-    private static final int HEIGHT = 1080;
+    public static final int WIDTH = 1920;
+    public static final int HEIGHT = 1080;
     private static final int FPS_CAP = 120;
 
     private static long lastFrameTime;
@@ -49,4 +49,6 @@ public class DisplayManager {
     private static long getCurrentTime(){
         return Sys.getTime() * 1000 / Sys.getTimerResolution();
     }
+
+
 }
